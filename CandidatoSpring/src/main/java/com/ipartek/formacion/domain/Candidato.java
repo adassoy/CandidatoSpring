@@ -4,8 +4,6 @@ import java.io.Serializable;
 
 import javax.validation.constraints.NotNull;
 
-//import javax.validation.constraints.NotNull;
-
 public class Candidato implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -18,7 +16,7 @@ public class Candidato implements Serializable {
 
 	public Candidato() {
 		super();
-		this.id = -1;
+		this.id = 0;
 		this.dni = "";
 		this.nombre = "";
 	}
@@ -46,6 +44,11 @@ public class Candidato implements Serializable {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+
+	// es un candidato nuevo?
+	public boolean isNew() {
+		return (this.id == 0) ? true : false;
 	}
 
 	// toString
