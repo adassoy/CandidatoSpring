@@ -18,6 +18,6 @@ public interface CandidatoService extends Serializable {
 	//
 	boolean modificar(Candidato c);
 
-	// Candidato getByDni(String dni);
+	Candidato getByDni(String dni);
 
 }

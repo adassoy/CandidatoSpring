@@ -16,15 +16,6 @@
 </head>
 <body>
 	
-<%-- 	<form action="candidato/save"  method="post" commandName="candidato"> --%>
-<!-- 		<input type="text" name="id" readonly="readonly"/> -->
-<!-- 		<input type="text" name="dni" placeholder="DNI"/> -->
-<!-- 		<input type="text" name="nombre" placeholder="NOMBRE"/> -->
-<!-- 		<input type="submit" value="Aceptar"/> -->
-<%-- 	</form> --%>
-	
-	<!-- ################################################################ -->
-	
 	<form:form action="candidato/save" method="post" commandName="candidato">
 
 	<c:if test="${!isNew}">

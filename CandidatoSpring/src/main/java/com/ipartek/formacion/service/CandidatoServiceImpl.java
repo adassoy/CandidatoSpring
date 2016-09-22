@@ -32,6 +32,11 @@ public class CandidatoServiceImpl implements CandidatoService {
 	}
 
 	@Override
+	public Candidato getByDni(String dni) {
+		return this.candidatoDAOImpl.getByDni(dni);
+	}
+
+	@Override
 	public boolean eliminar(long id) {
 		return this.candidatoDAOImpl.eliminar(id);
 	}

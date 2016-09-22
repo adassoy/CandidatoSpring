@@ -69,6 +69,23 @@ public class CandidatoDAOImpl implements CandidatoDAO {
 	}
 
 	@Override
+	public Candidato getByDni(String dni) {
+		Candidato c = null;
+
+		final String SQL = "SELECT id, dni, nombre FROM candidatos WHERE dni=" + dni;
+		try {
+			c = this.jdbctemplate.queryForObject(SQL, new CandidatoMapper());
+		} catch (EmptyResultDataAccessException e) {
+			this.logger.warn("No existen candidatos con DNI=" + dni);
+			c = null;
+		} catch (Exception e) {
+			this.logger.error(e.getMessage());
+			c = null;
+		}
+		return c;
+	}
+
+	@Override
 	public boolean eliminar(long id) {
 		boolean resul = false;
 

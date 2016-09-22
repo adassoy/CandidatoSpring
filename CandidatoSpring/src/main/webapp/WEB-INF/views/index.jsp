@@ -25,10 +25,32 @@
 		<br> <input type="submit" value="Buscar" /> <br>
 		<br>
 	</form>	
+	
+	<!-- <form:form action="buscar" method="get" commandName="candidato">
+
+	
+		<form:label path="buscar">ID</form:label> 
+		<form:input path="buscar" readonly="true"/>
+		<form:errors path="buscar" cssClass="error"/>
+		<br><br>
+	
+	
+	<form:label path="dni">DNI</form:label>
+	<form:input path="dni" placeholder="DNI"/>
+	<form:errors path="dni" cssClass="error"/>
+	<br><br>
+	
+	<form:label path="nombre">NOMBRE</form:label>
+	<form:input path="nombre" placeholder="NOMBRE"/>
+	<form:errors path="nombre" cssClass="error"/>
+	<br><br>
+	
+	<input type="submit" value="ENVIAR">
+</form:form> -->
 
 	<c:forEach items="${candidatos}" var="can">
 		<a href="candidato/detalle/${can.id}"> <c:out
- 				value="${can.dni}" /> <i>$<c:out value="${can.nombre}" /></i>
+ 				value="${can.dni}" /> <i><c:out value="${can.nombre}" /></i>
 		</a>
 		<a href="candidato/eliminar/${can.id}"> [X] </a>
 

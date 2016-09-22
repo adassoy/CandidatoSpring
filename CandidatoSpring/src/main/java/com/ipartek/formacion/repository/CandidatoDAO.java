@@ -21,6 +21,6 @@ public interface CandidatoDAO extends Serializable {
 
 	void setDataSource(DataSource dataSource);
 
-	// Candidato getByDni(String dni);
+	Candidato getByDni(String dni);
 
 }

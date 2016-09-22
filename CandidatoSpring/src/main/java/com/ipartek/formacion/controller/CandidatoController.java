@@ -71,7 +71,7 @@ public class CandidatoController {
 				this.candidatoService.modificar(candidato);
 				this.logger.info("Candidato modificado");
 			}
-			model.put("candidato", this.candidatoService.getCandidatos());
+			model.put("candidatos", this.candidatoService.getCandidatos());
 			model.put("msg", "Candidato guardado con exito");
 			view = "index";
 		}
@@ -103,14 +103,23 @@ public class CandidatoController {
 		}
 
 		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("candidatos", this.candidatoService.getCandidatos());
 		model.put("msg", msg);
 
 		return new ModelAndView("index", model);
 	}
 
 	@RequestMapping(value = "/buscar", method = RequestMethod.GET)
-	public void buscar() {
-		this.logger.info("Buscando Candidato");
+	public ModelAndView buscarCandidatos(@Valid Candidato candidato, BindingResult bindingResult)
+			throws ServletException, IOException {
+
+		this.logger.info("Procesando peticion buscar Candidatos");
+
+		// atributos == modelo
+		final Map<String, Object> model = new HashMap<String, Object>();
+		model.put("candidatos", this.candidatoService.getCandidatos());
+
+		return new ModelAndView("index", model);
 	}
 
 }
