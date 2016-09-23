@@ -21,36 +21,33 @@
 	</ol>
 
 	<form action="buscar" method="get">
-		<input type="text" placeholder="Inserta un DNI" /> <br>
-		<br> <input type="submit" value="Buscar" /> <br>
-		<br>
-	</form>	
-	
-	<!-- <form:form action="buscar" method="get" commandName="candidato">
+		<input name="dni" type="text" placeholder="Inserta un DNI" /> <br>
+		<br> <select id="tipoCampo" name="tipoCampo">
+			<option value="id">id</option>
+			<option value="dni" selected="selected">dni</option>
+			<option value="nombre">nombre</option>
+			
+		</select> <input type="submit" value="Buscar" /> <br> <br>
+	</form>
 
-	
-		<form:label path="buscar">ID</form:label> 
-		<form:input path="buscar" readonly="true"/>
-		<form:errors path="buscar" cssClass="error"/>
-		<br><br>
-	
-	
-	<form:label path="dni">DNI</form:label>
-	<form:input path="dni" placeholder="DNI"/>
-	<form:errors path="dni" cssClass="error"/>
-	<br><br>
-	
-	<form:label path="nombre">NOMBRE</form:label>
-	<form:input path="nombre" placeholder="NOMBRE"/>
-	<form:errors path="nombre" cssClass="error"/>
-	<br><br>
-	
-	<input type="submit" value="ENVIAR">
-</form:form> -->
+
+
+	<%-- 	<form:form action="buscar" method="get" modelAttribute="candidato"> --%>
+
+	<%-- 		<form:label path="dni">NOMBRE</form:label> --%>
+	<%-- 		<form:input path="dni" placeholder="Inserta un DNI" /> --%>
+	<%-- 		<form:errors path="dni" cssClass="error" /> --%>
+	<!-- 		<br> -->
+	<!-- 		<br> -->
+
+	<!-- 		<input type="submit" value="ENVIAR"> -->
+	<%-- 	</form:form> --%>
+
+
 
 	<c:forEach items="${candidatos}" var="can">
-		<a href="candidato/detalle/${can.id}"> <c:out
- 				value="${can.dni}" /> <i><c:out value="${can.nombre}" /></i>
+		<a href="candidato/detalle/${can.id}"> <c:out value="${can.dni}" />
+			<i><c:out value="${can.nombre}" /></i>
 		</a>
 		<a href="candidato/eliminar/${can.id}"> [X] </a>
 
@@ -58,7 +55,7 @@
 		<br>
 	</c:forEach>
 
-	
+
 	<!-- JavaScript -->
 
 </body>

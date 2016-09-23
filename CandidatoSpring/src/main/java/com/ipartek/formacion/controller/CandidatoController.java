@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.apache.commons.logging.Log;
@@ -23,18 +25,20 @@ import com.ipartek.formacion.service.CandidatoService;
 @Controller
 public class CandidatoController {
 	protected final Log logger = LogFactory.getLog(getClass());
+	public String valor_buscado = "";
+	public String tipoCampo = "";
 
 	@Autowired
 	private CandidatoService candidatoService;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView listarCandidatos() throws ServletException, IOException {
+	public ModelAndView listarCandidatos(String valor_buscado) throws ServletException, IOException {
 
 		this.logger.info("Procesando peticion listar Candidatos");
 
 		// atributos == modelo
 		final Map<String, Object> model = new HashMap<String, Object>();
-		model.put("candidatos", this.candidatoService.getCandidatos());
+		model.put("candidatos", this.candidatoService.getCandidatos(valor_buscado));
 
 		return new ModelAndView("index", model);
 	}
@@ -71,7 +75,7 @@ public class CandidatoController {
 				this.candidatoService.modificar(candidato);
 				this.logger.info("Candidato modificado");
 			}
-			model.put("candidatos", this.candidatoService.getCandidatos());
+			model.put("candidatos", this.candidatoService.getCandidatos(valor_buscado));
 			model.put("msg", "Candidato guardado con exito");
 			view = "index";
 		}
@@ -103,21 +107,25 @@ public class CandidatoController {
 		}
 
 		Map<String, Object> model = new HashMap<String, Object>();
-		model.put("candidatos", this.candidatoService.getCandidatos());
+		model.put("candidatos", this.candidatoService.getCandidatos(valor_buscado));
 		model.put("msg", msg);
 
 		return new ModelAndView("index", model);
 	}
 
 	@RequestMapping(value = "/buscar", method = RequestMethod.GET)
-	public ModelAndView buscarCandidatos(@Valid Candidato candidato, BindingResult bindingResult)
+	public ModelAndView buscarCandidatos(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		valor_buscado = request.getParameter("dni");
+		tipoCampo = request.getParameter("tipoCampo");
+
+		listarCandidatos(valor_buscado);
 
 		this.logger.info("Procesando peticion buscar Candidatos");
 
 		// atributos == modelo
 		final Map<String, Object> model = new HashMap<String, Object>();
-		model.put("candidatos", this.candidatoService.getCandidatos());
+		model.put("candidatos", this.candidatoService.getCandidatos(valor_buscado));
 
 		return new ModelAndView("index", model);
 	}
