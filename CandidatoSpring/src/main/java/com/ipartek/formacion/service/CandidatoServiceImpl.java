@@ -19,8 +19,8 @@ public class CandidatoServiceImpl implements CandidatoService {
 	private List<Candidato> candidatos;
 
 	@Override
-	public List<Candidato> getCandidatos(String valor_buscado) {
-		this.candidatos = this.candidatoDAOImpl.getCandidatos(valor_buscado);
+	public List<Candidato> getCandidatos(String tipoCampo,String valor_buscado) {
+		this.candidatos = this.candidatoDAOImpl.getCandidatos(tipoCampo,valor_buscado);
 
 		return this.candidatos;
 	}

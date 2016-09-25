@@ -35,7 +35,7 @@ public class CandidatoDAOImpl implements CandidatoDAO {
 	private SimpleJdbcCall jdbcCall;
 
 	@Override
-	public List<Candidato> getCandidatos(String valor_buscado) {
+	public List<Candidato> getCandidatos(String tipoCampo,String valor_buscado) {
 		ArrayList<Candidato> lista = new ArrayList<Candidato>();
 		if (valor_buscado == null || valor_buscado == "") {
 
@@ -45,18 +45,19 @@ public class CandidatoDAOImpl implements CandidatoDAO {
 				lista = (ArrayList<Candidato>) this.jdbctemplate.query(SQL, new CandidatoMapper());
 
 			} catch (EmptyResultDataAccessException e) {
-				this.logger.warn("No existen productos todavia " + SQL);
+				this.logger.warn("No existen candidatos todavia " + SQL);
 			} catch (Exception e) {
 				this.logger.error(e.getMessage());
 			}
 		} else {
-			final String SQL = "SELECT id, dni, nombre FROM candidatos WHERE dni='" + valor_buscado + "'";
+			//final String SQL = "SELECT id, dni, nombre FROM candidatos WHERE dni='" + valor_buscado + "'";
+			final String SQL = "SELECT id, dni, nombre FROM candidatos WHERE " + tipoCampo + " = '" + valor_buscado + "'";
 
 			try {
 				lista = (ArrayList<Candidato>) this.jdbctemplate.query(SQL, new CandidatoMapper());
 
 			} catch (EmptyResultDataAccessException e) {
-				this.logger.warn("No existen productos todavia " + SQL);
+				this.logger.warn("No existen candidatos todavia " + SQL);
 			} catch (Exception e) {
 				this.logger.error(e.getMessage());
 			}

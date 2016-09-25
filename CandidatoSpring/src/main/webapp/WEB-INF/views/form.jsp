@@ -12,6 +12,7 @@
 	<base href="${pageContext.request.contextPath}/"></base>
 	
 	<link rel="stylesheet" href="resources/css/styles.css?v=1.0">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 	
 </head>
 <body>
