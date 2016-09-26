@@ -32,13 +32,13 @@ public class CandidatoController {
 	private CandidatoService candidatoService;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView listarCandidatos(String tipoCampo,String valor_buscado) throws ServletException, IOException {
+	public ModelAndView listarCandidatos(String tipoCampo, String valor_buscado) throws ServletException, IOException {
 
 		this.logger.info("Procesando peticion listar Candidatos");
 
 		// atributos == modelo
 		final Map<String, Object> model = new HashMap<String, Object>();
-		model.put("candidatos", this.candidatoService.getCandidatos(tipoCampo,valor_buscado));
+		model.put("candidatos", this.candidatoService.getCandidatos(tipoCampo, valor_buscado));
 
 		return new ModelAndView("index", model);
 	}
@@ -75,7 +75,7 @@ public class CandidatoController {
 				this.candidatoService.modificar(candidato);
 				this.logger.info("Candidato modificado");
 			}
-			model.put("candidatos", this.candidatoService.getCandidatos(tipoCampo,valor_buscado));
+			model.put("candidatos", this.candidatoService.getCandidatos(tipoCampo, valor_buscado));
 			model.put("msg", "Candidato guardado con exito");
 			view = "index";
 		}
@@ -119,14 +119,15 @@ public class CandidatoController {
 		valor_buscado = request.getParameter("valor_buscado");
 		tipoCampo = request.getParameter("tipoCampo");
 
-		listarCandidatos(tipoCampo,valor_buscado);
+		listarCandidatos(tipoCampo, valor_buscado);
 
 		this.logger.info("Procesando peticion buscar Candidatos");
 
 		// atributos == modelo
 		final Map<String, Object> model = new HashMap<String, Object>();
 		model.put("candidatos", this.candidatoService.getCandidatos(tipoCampo, valor_buscado));
-		//model.put("candidatos", this.candidatoService.getCandidatos(valor_buscado));
+		// model.put("candidatos",
+		// this.candidatoService.getCandidatos(valor_buscado));
 
 		return new ModelAndView("index", model);
 	}

@@ -4,12 +4,15 @@ import java.io.Serializable;
 
 import javax.validation.constraints.NotNull;
 
+import com.ipartek.formacion.validator.Nif;
+
 public class Candidato implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private long id;
 	@NotNull
+	@Nif
 	private String dni;
 	@NotNull
 	private String nombre;
