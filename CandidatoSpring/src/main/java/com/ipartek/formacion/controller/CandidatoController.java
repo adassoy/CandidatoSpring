@@ -60,23 +60,33 @@ public class CandidatoController {
 
 		Map<String, Object> model = new HashMap<String, Object>();
 		String view = "form";
+		String msg = "Problema al generar candidato";
 
 		if (bindingResult.hasErrors()) {
-			this.logger.warn("parametros no validos");
+			this.logger.debug("parametros no validos");
 			model.put("isNew", candidato.isNew());
+			msg = "Alguno de los campos no es valido";
 
 		} else {
 
 			if (candidato.isNew()) {
-				this.logger.info("Detectado como nuevo candidato");
-				this.candidatoService.crear(candidato);
+				if (this.candidatoService.crear(candidato)) {
+					this.logger.info("Detectado como nuevo candidato");
+					msg = "Insertado correctamente";
+				} else {
+					msg = "Dni duplicado";
+				}
+
 			} else {
-				this.logger.info("Detectado como candidato a modificar");
-				this.candidatoService.modificar(candidato);
-				this.logger.info("Candidato modificado");
+				if (this.candidatoService.modificar(candidato)) {
+					this.logger.info("Detectado como candidato a modificar");
+					this.logger.info("Candidato modificado");
+					msg = "Modificado correctamente";
+				}
+
 			}
 			model.put("candidatos", this.candidatoService.getCandidatos(tipoCampo, valor_buscado));
-			model.put("msg", "Candidato guardado con exito");
+			model.put("msg", msg);
 			view = "index";
 		}
 		return new ModelAndView(view, model);

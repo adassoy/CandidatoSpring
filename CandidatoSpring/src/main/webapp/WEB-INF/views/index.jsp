@@ -8,7 +8,8 @@
 <html lang="es">
 <head>
 
-<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans"
+	rel="stylesheet">
 <meta charset="utf-8">
 <title>Pagina de inicio</title>
 <base href="${pageContext.request.contextPath}/"></base>
@@ -25,35 +26,58 @@
 	<form action="buscar" method="get">
 		<fieldset>
 			<legend>BUSQUEDA POR ID | DNI | NOMBRE</legend>
-			<label for="tipoCampo">Indica el criterio de busqueda (si no seleccionas nada hará busqueda por DNI)</label>
-						<br><br>
-				<select id="tipoCampo" name="tipoCampo">
-					<option value="id">id</option>
-					<option value="dni" selected="selected">dni</option>
-					<option value="nombre">nombre</option>			
-				</select> 
-						<br><br>
-				<input name="valor_buscado" type="text" placeholder="Inserta un valor a buscar" /> 
-						<br><br>
-					
-				<input type="submit" value="Buscar" /> <br> <br>
+			<label for="tipoCampo">Indica el criterio de busqueda (si no
+				seleccionas nada hará busqueda por DNI)</label> <br> <br> <select
+				id="tipoCampo" name="tipoCampo">
+				<option value="id">id</option>
+				<option value="dni" selected="selected">dni</option>
+				<option value="nombre">nombre</option>
+			</select> <br> <br> <input name="valor_buscado" type="text"
+				placeholder="Inserta un valor a buscar" /> <br> <br> <input
+				type="submit" value="Buscar" /> <br> <br>
 		</fieldset>
 	</form>
 	
-	<br><br>
-
+	<form action="buscar_eliminados" method="get">
 		<fieldset>
-		<legend>LISTADO POR DNI | NOMBRE | [X] PARA ELIMINAR UN REGISTRO</legend>
-			<c:forEach items="${candidatos}" var="can">
-				<a href="candidato/detalle/${can.id}"> <c:out value="${can.dni}" />
-					<i><c:out value="${can.nombre}" /></i>
-				</a>
-				<a href="candidato/eliminar/${can.id}"> [X] </a>
-		
-				<br>
-				<br>
-			</c:forEach>
+			<legend>BUSQUEDA POR ID | DNI | NOMBRE (REGISTROS ELIMINADOS)</legend>
+			<label for="tipoCampo">Indica el criterio de busqueda (si no
+				seleccionas nada hará busqueda por DNI)</label> <br> <br> <select
+				id="tipoCampo" name="tipoCampo">
+				<option value="id">id</option>
+				<option value="dni" selected="selected">dni</option>
+				<option value="nombre">nombre</option>
+			</select> <br> <br> <input name="valor_buscado" type="text"
+				placeholder="Inserta un valor a buscar" /> <br> <br> <input
+				type="submit" value="Buscar" disabled="disabled" /> <br> <br>
 		</fieldset>
+	</form>
+
+
+
+
+	<br>
+	<br>
+
+	<fieldset>
+		<legend>LISTADO POR DNI | NOMBRE | [X] PARA ELIMINAR UN
+			REGISTRO</legend>
+		${msg}<br> <br>
+		<h4>
+			DNI | NOMBRE | [X]ELIMINAR | F_ALTA | F_MODIFICACION
+			<h4>
+				<c:forEach items="${candidatos}" var="can">
+					<a href="candidato/detalle/${can.id}"> <c:out
+							value="${can.dni}" /> <i><c:out value="${can.nombre}" /></i>
+					</a>
+					<a href="candidato/eliminar/${can.id}"> [X] </a>
+					<p>Alta - ${can.fecha_alta}</p>
+					<p>Modificacion - ${can.fecha_modificacion}</p>
+
+					<br>
+					<br>
+				</c:forEach>
+	</fieldset>
 
 
 	<!-- JavaScript -->

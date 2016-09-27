@@ -11,6 +11,7 @@ import javax.sql.DataSource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -34,12 +35,16 @@ public class CandidatoDAOImpl implements CandidatoDAO {
 	private JdbcTemplate jdbctemplate;
 	private SimpleJdbcCall jdbcCall;
 
+	Statement stmt = null;
+
 	@Override
-	public List<Candidato> getCandidatos(String tipoCampo,String valor_buscado) {
+	public List<Candidato> getCandidatos(String tipoCampo, String valor_buscado) {
 		ArrayList<Candidato> lista = new ArrayList<Candidato>();
 		if (valor_buscado == null || valor_buscado == "") {
 
-			final String SQL = "SELECT id, dni, nombre FROM candidatos;";
+			final String SQL = "SELECT id, dni, nombre, fecha_alta, fecha_modificacion FROM candidatos WHERE fecha_eliminacion is null;";
+
+			this.logger.info("Buscando todos los candidatos NO eliminados " + SQL);
 
 			try {
 				lista = (ArrayList<Candidato>) this.jdbctemplate.query(SQL, new CandidatoMapper());
@@ -50,8 +55,9 @@ public class CandidatoDAOImpl implements CandidatoDAO {
 				this.logger.error(e.getMessage());
 			}
 		} else {
-			//final String SQL = "SELECT id, dni, nombre FROM candidatos WHERE dni='" + valor_buscado + "'";
-			final String SQL = "SELECT id, dni, nombre FROM candidatos WHERE " + tipoCampo + " = '" + valor_buscado + "'";
+
+			final String SQL = "SELECT id, dni,fecha_alta,fecha_modificacion,fecha_eliminacion,nombre FROM candidatos WHERE "
+					+ tipoCampo + " = '" + valor_buscado + "'and fecha_eliminacion is null";
 
 			try {
 				lista = (ArrayList<Candidato>) this.jdbctemplate.query(SQL, new CandidatoMapper());
@@ -104,8 +110,9 @@ public class CandidatoDAOImpl implements CandidatoDAO {
 	@Override
 	public boolean eliminar(long id) {
 		boolean resul = false;
+		final String SQL = "UPDATE `candidatos` SET `fecha_eliminacion`= CURRENT_TIMESTAMP()  WHERE `id`=" + id;
 
-		final String SQL = "DELETE FROM `candidatos` WHERE  `id`=" + id;
+		// final String SQL = "DELETE FROM `candidatos` WHERE `id`=" + id;
 
 		if (1 == this.jdbctemplate.update(SQL)) {
 			resul = true;
@@ -118,22 +125,29 @@ public class CandidatoDAOImpl implements CandidatoDAO {
 	public boolean crear(final Candidato c) {
 		boolean resul = false;
 		int affectedRows = -1;
-		KeyHolder keyHolder = new GeneratedKeyHolder();
+		try {
+			KeyHolder keyHolder = new GeneratedKeyHolder();
 
-		final String sqlInsert = "INSERT INTO `candidatos` (  `dni`, `nombre`) VALUES ( ? , ?  );";
-		affectedRows = this.jdbctemplate.update(new PreparedStatementCreator() {
-			@Override
-			public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
-				final PreparedStatement ps = conn.prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS);
-				ps.setString(1, c.getDni());
-				ps.setString(2, c.getNombre());
-				return ps;
+			final String sqlInsert = "INSERT INTO `candidatos` (  `dni`, `nombre`) VALUES ( ? , ?  );";
+			affectedRows = this.jdbctemplate.update(new PreparedStatementCreator() {
+				@Override
+				public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
+					final PreparedStatement ps = conn.prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS);
+					ps.setString(1, c.getDni());
+					ps.setString(2, c.getNombre());
+					return ps;
+				}
+			}, keyHolder);
+
+			if (affectedRows == 1) {
+				resul = true;
+				c.setId(keyHolder.getKey().longValue());
 			}
-		}, keyHolder);
 
-		if (affectedRows == 1) {
-			resul = true;
-			c.setId(keyHolder.getKey().longValue());
+		} catch (DuplicateKeyException e) {
+			logger.error("Dni duplicado " + e.getMessage());
+		} catch (Exception e) {
+			logger.error("No se puede insertar " + e.getMessage());
 		}
 
 		return resul;

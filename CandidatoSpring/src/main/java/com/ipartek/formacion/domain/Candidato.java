@@ -3,19 +3,56 @@ package com.ipartek.formacion.domain;
 import java.io.Serializable;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotEmpty;
 
 import com.ipartek.formacion.validator.Nif;
 
 public class Candidato implements Serializable {
 
+	public java.util.Date getFecha_alta() {
+		return fecha_alta;
+	}
+
+	public void setFecha_alta(java.util.Date fecha_alta) {
+		this.fecha_alta = fecha_alta;
+	}
+
+	public java.util.Date getFecha_modificacion() {
+		return fecha_modificacion;
+	}
+
+	public void setFecha_modificacion(java.util.Date fecha_modificacion) {
+		this.fecha_modificacion = fecha_modificacion;
+	}
+
+	public java.util.Date getFecha_baja() {
+		return fecha_baja;
+	}
+
+	public void setFecha_baja(java.util.Date fecha_baja) {
+		this.fecha_baja = fecha_baja;
+	}
+
 	private static final long serialVersionUID = 1L;
 
 	private long id;
+
 	@NotNull
 	@Nif
 	private String dni;
-	@NotNull
+	@NotEmpty
+	@Size(min = 2, max = 50)
 	private String nombre;
+
+	java.util.Date fecha_alta;
+	java.util.Date fecha_modificacion;
+	java.util.Date fecha_baja;
+
+	// java.util.Date fecha_alta = new java.util.Date();
+	// java.util.Date fecha_modificacion = new java.util.Date();
+	// java.util.Date fecha_baja = new java.util.Date();
 
 	public Candidato() {
 		super();
@@ -54,10 +91,12 @@ public class Candidato implements Serializable {
 		return (this.id == 0) ? true : false;
 	}
 
-	// toString
 	@Override
 	public String toString() {
-		return "Candidato [id=" + id + ", dni=" + dni + ", nombre=" + nombre + "]";
+		return "Candidato [id=" + id + ", dni=" + dni + ", nombre=" + nombre + ", fecha_alta=" + fecha_alta
+				+ ", fecha_modificacion=" + fecha_modificacion + ", fecha_baja=" + fecha_baja + "]";
 	}
+
+	// toString
 
 }
